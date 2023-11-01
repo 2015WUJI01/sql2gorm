@@ -7,26 +7,14 @@ Web tool: https://sql2gorm.mccode.info/
 ## Download
 
 ```
-go get -u github.com/cascax/sql2gorm/...
+go build -o /usr/local/bin/sql2gorm
 ```
 
 ## Usage (Command Line)
 
-get struct from a sql file and write struct to the file
+generate struct from arguments
 
-```
-sql2gorm -f file.sql -o model.go
-```
-
-get struct from mysql
-
-```
-sql2gorm -db-dsn=root:123456@/msir -db-table=fund_info
-```
-
-get struct from arguments
-
-```
+```bash
 sql2gorm -sql="CREATE TABLE person_info (
   age INT(11) unsigned NULL,
   id BIGINT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT '这是id',
@@ -38,17 +26,10 @@ sql2gorm -sql="CREATE TABLE person_info (
   ) COMMENT='person info';"
 ```
 
-## Library usage
+```shell
+sql="{query}"
 
-```go
-import "github.com/cascax/sql2gorm/parser"
+no_backticks=$(echo "$sql" | sed 's/`//g')
 
-sql := `CREATE TABLE t_person_info (
-  id BIGINT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL COMMENT 'primary id',
-  name VARCHAR(30) NOT NULL DEFAULT 'default_name',
-  created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  age INT(11) unsigned NULL,
-  sex VARCHAR(2) NULL
-  );`
-data, err := parser.ParseSql(sql, WithTablePrefix("t_"), WithJsonTag())
+sql2gorm -json -with-tablename -with-type -sql $no_backticks
 ```

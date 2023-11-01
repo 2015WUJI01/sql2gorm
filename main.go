@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/cascax/sql2gorm/parser"
 	"io"
-	"io/ioutil"
 	"os"
 )
 
@@ -119,7 +118,7 @@ func main() {
 	sql := args.Sql
 	if sql == "" {
 		if args.InputFile != "" {
-			b, err := ioutil.ReadFile(args.InputFile)
+			b, err := os.ReadFile(args.InputFile)
 			if err != nil {
 				exitWithInfo("read %s failed, %s\n", args.InputFile, err)
 			}
